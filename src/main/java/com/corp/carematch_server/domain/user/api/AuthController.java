@@ -47,4 +47,6 @@ public class AuthController {
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, refreshCookie.toString())
                 .body(response);
     }
+
+    // refreshToken 재발급
 }
