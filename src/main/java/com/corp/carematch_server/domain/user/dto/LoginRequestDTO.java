@@ -1,0 +1,17 @@
+package com.corp.carematch_server.domain.user.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class LoginRequestDTO {
+    private int loginType; // social or ID
+    private String email;
+    private String password;
+
+}

@@ -1,0 +1,81 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '4.0.1'
+    id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.corp'
+version = '0.0.1-SNAPSHOT'
+description = 'the service provides senior care facilities for elderly people'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    // 1. Web & MVC
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    // 2. Data Access; JPA + MySQL
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    runtimeOnly 'com.mysql:mysql-connector-j'
+
+    // 3. Spring Security - 제일 중요
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    // 3-1. 테스트용 @WithMockUser 같은거
+    testImplementation 'org.springframework.boot:spring-boot-starter-security-test'
+
+    // 4. JWT - 토큰 관련
+    implementation 'io.jsonwebtoken:jjwt-api:0.12.6'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.6'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.6'
+
+    // 5. QueryDSL (Spring Boot 3.x/4.x 대응 - Jakarta 필수)
+    // 5-1. javax 대신 jakarta 사용 필수 (SpringBoot 3부터 패키지명 변경됨)
+    implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+
+    // 5-2. QClass 생성을 위한 어노테이션 프로세서 (역시 jakarta 버전 필수)
+    annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jakarta"
+
+    // 5-3. java.lang.NoClassDefFoundError 대응 (JPAEntity 어노테이션 인식용)
+    annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+    annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+
+    // 6. Utils & Parsing - 엑설 parsing & 부가적인 annotations
+    // NPE(NullPointException)
+    implementation 'org.jetbrains:annotations:24.0.0'
+    implementation 'org.apache.poi:poi:5.5.0'       // Excel (XLS)
+    implementation 'org.apache.poi:poi-ooxml:5.5.0' // Excel (XLSX)
+
+    // 7. WebClient : 외부 api 사용용
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
+    // 8. Lombok - console.log 인텔레제이 버전
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    // 9. Testing - 테스트 서버 가동시 필요한것
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+// QueryDSL Build Options (Gradle 8.0이상, spring boot 4.x 표준)
+
