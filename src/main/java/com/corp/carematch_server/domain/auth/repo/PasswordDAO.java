@@ -1,6 +1,6 @@
-package com.corp.carematch_server.domain.user.repo;
+package com.corp.carematch_server.domain.auth.repo;
 
-import com.corp.carematch_server.domain.user.entity.Password;
+import com.corp.carematch_server.domain.auth.entity.Password;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

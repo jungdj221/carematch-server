@@ -1,14 +1,13 @@
-package com.corp.carematch_server.domain.user.application;
+package com.corp.carematch_server.domain.auth.application;
 
-import com.corp.carematch_server.domain.user.dto.UserRequestDTO;
-import com.corp.carematch_server.domain.user.dto.UserResponseDTO;
-import com.corp.carematch_server.domain.user.entity.Password;
-import com.corp.carematch_server.domain.user.entity.User;
-import com.corp.carematch_server.domain.user.repo.PasswordDAO;
-import com.corp.carematch_server.domain.user.repo.UserDAO;
+import com.corp.carematch_server.domain.auth.dto.UserRequestDTO;
+import com.corp.carematch_server.domain.auth.dto.UserResponseDTO;
+import com.corp.carematch_server.domain.auth.entity.Password;
+import com.corp.carematch_server.domain.auth.entity.User;
+import com.corp.carematch_server.domain.auth.repo.PasswordDAO;
+import com.corp.carematch_server.domain.auth.repo.UserDAO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package com.corp.carematch_server.domain.user.application;
+package com.corp.carematch_server.domain.auth.application;
 
 import org.springframework.stereotype.Service;
 

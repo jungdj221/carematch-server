@@ -1,10 +1,9 @@
-package com.corp.carematch_server.domain.user.application;
+package com.corp.carematch_server.domain.auth.application;
 
-import com.corp.carematch_server.domain.user.dto.LoginRequestDTO;
-import com.corp.carematch_server.domain.user.dto.LoginResponseDTO;
-import com.corp.carematch_server.domain.user.entity.*;
-import com.corp.carematch_server.domain.user.repo.PasswordDAO;
-import com.corp.carematch_server.domain.user.repo.UserDAO;
+import com.corp.carematch_server.domain.auth.dto.LoginRequestDTO;
+import com.corp.carematch_server.domain.auth.entity.*;
+import com.corp.carematch_server.domain.auth.repo.PasswordDAO;
+import com.corp.carematch_server.domain.auth.repo.UserDAO;
 import com.corp.carematch_server.global.auth.TokenProvider;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;

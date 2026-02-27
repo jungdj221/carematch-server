@@ -1,6 +1,6 @@
 package com.corp.carematch_server.global.util;
 
-import com.corp.carematch_server.domain.user.entity.User;
+import com.corp.carematch_server.domain.auth.entity.User;
 import com.corp.carematch_server.global.auth.PrincipalDetails;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

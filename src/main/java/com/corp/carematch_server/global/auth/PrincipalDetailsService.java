@@ -1,11 +1,11 @@
 package com.corp.carematch_server.global.auth;
 
-import com.corp.carematch_server.domain.user.entity.Password;
-import com.corp.carematch_server.domain.user.entity.QPassword;
-import com.corp.carematch_server.domain.user.entity.QUser;
-import com.corp.carematch_server.domain.user.entity.User;
-import com.corp.carematch_server.domain.user.repo.PasswordDAO;
-import com.corp.carematch_server.domain.user.repo.UserDAO;
+import com.corp.carematch_server.domain.auth.entity.Password;
+import com.corp.carematch_server.domain.auth.entity.QPassword;
+import com.corp.carematch_server.domain.auth.entity.QUser;
+import com.corp.carematch_server.domain.auth.entity.User;
+import com.corp.carematch_server.domain.auth.repo.PasswordDAO;
+import com.corp.carematch_server.domain.auth.repo.UserDAO;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service

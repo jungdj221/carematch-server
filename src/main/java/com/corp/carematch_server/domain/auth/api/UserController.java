@@ -1,8 +1,8 @@
-package com.corp.carematch_server.domain.user.api;
+package com.corp.carematch_server.domain.auth.api;
 
-import com.corp.carematch_server.domain.user.application.UserCommandService;
-import com.corp.carematch_server.domain.user.dto.UserRequestDTO;
-import com.corp.carematch_server.domain.user.dto.UserResponseDTO;
+import com.corp.carematch_server.domain.auth.application.UserCommandService;
+import com.corp.carematch_server.domain.auth.dto.UserRequestDTO;
+import com.corp.carematch_server.domain.auth.dto.UserResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
