@@ -19,7 +19,7 @@ import java.util.Collection;
 @Entity
 @DynamicInsert
 @Builder
-@Table(name = "password")
+@Table(name = "credentials")
 public class Password {
 
     @Id

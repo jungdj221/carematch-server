@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Entity
 @DynamicInsert
 @Builder
-@Table(name = "identification")
+@Table(name = "identifications")
 public class Identification {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
