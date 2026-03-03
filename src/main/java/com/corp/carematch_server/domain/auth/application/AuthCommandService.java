@@ -6,8 +6,8 @@ import com.corp.carematch_server.domain.auth.dto.UserResponseDTO;
 import com.corp.carematch_server.domain.auth.entity.*;
 import com.corp.carematch_server.domain.auth.repo.PasswordDAO;
 import com.corp.carematch_server.domain.auth.repo.UserDAO;
-import com.corp.carematch_server.domain.user.entity.QUser;
-import com.corp.carematch_server.domain.user.entity.User;
+import com.corp.carematch_server.domain.user.entity.QUsers;
+import com.corp.carematch_server.domain.user.entity.Users;
 import com.corp.carematch_server.global.auth.TokenProvider;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -31,31 +31,31 @@ public class AuthCommandService {
     private final TokenProvider tokenProvider;
     private final PasswordEncoder passwordEncoder;
 
-    private final QUser qUser = QUser.user;
-    private final QPassword qPassword = QPassword.password1;
+    private final QUsers qUser = QUsers.users;
+    private final QCredentials qCredentials = QCredentials.credentials;
 
     // signup
     public UserResponseDTO signup(UserRequestDTO dto){
         // step 1; root user 정보 기입
-        User user = User.builder()
+        Users users = Users.builder()
                 .email(dto.getEmail())
                 .loginType(dto.getLoginType())
                 .build();
-        User newUser = userDAO.save(user);
+        Users newUsers = userDAO.save(users);
         // step 2; password + salt
-        Password password = Password.builder()
-                .user(User.builder()
-                        .userNo(newUser.getUserNo())
+        Credentials credentials = Credentials.builder()
+                .users(Users.builder()
+                        .userNo(newUsers.getUserNo())
                         .build())
 //                .salt()
                 .password(passwordEncoder.encode(dto.getPassword()))
                 .build();
-        Password newPassword = passwordDAO.save(password);
+        Credentials newCredentials = passwordDAO.save(credentials);
 
         // step 3; 결과값 res
         return  UserResponseDTO.builder()
-                .userNo(newUser.getUserNo())
-                .email(newUser.getEmail())
+                .userNo(newUsers.getUserNo())
+                .email(newUsers.getEmail())
                 .build();
 
     }
@@ -63,28 +63,28 @@ public class AuthCommandService {
     // login
     public TokenDTO login(LoginRequestDTO dto){
 
-        Password passwordEntity = queryFactory.selectFrom(qPassword)
-                .innerJoin(qPassword.user, qUser).fetchJoin()
+        Credentials credentialsEntity = queryFactory.selectFrom(qCredentials)
+                .innerJoin(qCredentials.users, qUser).fetchJoin()
                 .where(qUser.email.eq(dto.getEmail()))
                 .fetchOne();
 
-        if (passwordEntity == null) {
+        if (credentialsEntity == null) {
             throw new IllegalArgumentException("아이디 또는 비밀번호가 일치하지 않습니다");
         }
 
-        if(!passwordEncoder.matches(dto.getPassword(), passwordEntity.getPassword())){
+        if(!passwordEncoder.matches(dto.getPassword(), credentialsEntity.getPassword())){
             throw new IllegalArgumentException("비밀번호가 일치하지않습니다.");
         }
 
         // 로그인 성공; 토큰발급
-        User user = passwordEntity.getUser();
+        Users users = credentialsEntity.getUsers();
 
-        String accessToken = tokenProvider.createAccessToken(user);
-        String refreshToken = tokenProvider.createRefreshToken(user);
+        String accessToken = tokenProvider.createAccessToken(users);
+        String refreshToken = tokenProvider.createRefreshToken(users);
         return TokenDTO.builder()
                 .accessToken(accessToken)
-                .email(user.getEmail())
-                .name(user.getUserName())
+                .email(users.getEmail())
+                .name(users.getUserName())
                 .refreshToken(refreshToken)
                 .build();
 

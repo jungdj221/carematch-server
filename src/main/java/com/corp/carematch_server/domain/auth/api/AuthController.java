@@ -20,9 +20,6 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     @Autowired
-    private AuthCommandService authService;
-
-    @Autowired
     private AuthCommandService authCommandService;
 
     // login
@@ -30,7 +27,7 @@ public class AuthController {
     public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginRequestDTO dto){
 
         // 1. 로그인 성공 후, access & refresh token 발급
-        TokenDTO tokenDTO = authService.login(dto);
+        TokenDTO tokenDTO = authCommandService.login(dto);
 
         // 2. refreshToken 은 쿠키에 포장
         ResponseCookie refreshCookie = ResponseCookie.from("refreshToken", tokenDTO.getRefreshToken())

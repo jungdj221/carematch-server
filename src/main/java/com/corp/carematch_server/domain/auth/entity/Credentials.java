@@ -1,6 +1,6 @@
 package com.corp.carematch_server.domain.auth.entity;
 
-import com.corp.carematch_server.domain.user.entity.User;
+import com.corp.carematch_server.domain.user.entity.Users;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @DynamicInsert
 @Builder
 @Table(name = "credentials")
-public class Password {
+public class Credentials {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,7 +28,7 @@ public class Password {
     // UNIQUE Key 존재 -> 1:1 관계
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_no", nullable = false) // TODO: 참조하는 테이블의 컬럼명(snake_case) 확인 필요
-    private User user;
+    private Users users;
 
     @Column(name = "salt", length = 128)
     private String salt;
