@@ -1,6 +1,6 @@
 package com.corp.carematch_server.domain.auth.entity;
 
-import com.corp.carematch_server.domain.user.entity.Users;
+import com.corp.carematch_server.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @DynamicInsert
 @Builder
 @Table(name = "identifications")
-public class Identifications {
+public class Identification {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "authentication_id")
@@ -27,7 +27,7 @@ public class Identifications {
     // UNIQUE 제약조건이 있으므로 @OneToOne 권장
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_no") // TODO: 참조하는 테이블의 컬럼명(snake_case) 확인 필요
-    private Users users;
+    private User user;
 
     // 개인정보 수집 동의 여부 (TinyInt -> Boolean)
     @Column(name = "gather_agree")

@@ -1,6 +1,6 @@
 package com.corp.carematch_server.global.auth;
 
-import com.corp.carematch_server.domain.user.entity.Users;
+import com.corp.carematch_server.domain.user.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -33,12 +33,12 @@ public class TokenProvider {
     }
 
     // accessToken
-    public String createAccessToken(Users users) {
+    public String createAccessToken(User user) {
         return Jwts.builder()
-                .subject(users.getEmail()) // 사용자 식별자 (이메일)
+                .subject(user.getEmail()) // 사용자 식별자 (이메일)
                 .claims(Map.of(
-                        "userNo", users.getUserNo(), // PK
-                        "role", users.getUserRole() // 권한 enum 설정시 .name까지 설정가능
+                        "userNo", user.getUserNo(), // PK
+                        "role", user.getUserRole() // 권한 enum 설정시 .name까지 설정가능
                 ))
                 .issuedAt(new Date()) // 발급 시간
                 .expiration(Date.from(Instant.now().plus(15, ChronoUnit.MINUTES))) // 15분 유효
@@ -47,9 +47,9 @@ public class TokenProvider {
     }
 
     // refreshToken
-    public String createRefreshToken(Users users) {
+    public String createRefreshToken(User user) {
         return Jwts.builder()
-                .subject(users.getEmail()) // 누구의 리프레시 토큰인지 식별
+                .subject(user.getEmail()) // 누구의 리프레시 토큰인지 식별
                 .issuedAt(new Date())
                 .expiration(Date.from(Instant.now().plus(1, ChronoUnit.DAYS))) // 7일 유효
                 .signWith(secretKey)

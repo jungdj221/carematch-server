@@ -1,12 +1,11 @@
 package com.corp.carematch_server.global.auth;
 
-import com.corp.carematch_server.domain.auth.entity.Credentials;
-import com.corp.carematch_server.domain.auth.entity.QCredentials;
-import com.corp.carematch_server.domain.auth.entity.QCredentials;
-import com.corp.carematch_server.domain.user.entity.QUsers;
-import com.corp.carematch_server.domain.user.entity.Users;
+import com.corp.carematch_server.domain.auth.entity.Credential;
+import com.corp.carematch_server.domain.auth.entity.QCredential;
+import com.corp.carematch_server.domain.user.entity.QUser;
+import com.corp.carematch_server.domain.user.entity.User;
 import com.corp.carematch_server.domain.auth.repo.PasswordDAO;
-import com.corp.carematch_server.domain.auth.repo.UserDAO;
+import com.corp.carematch_server.domain.user.repo.UserDAO;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
@@ -29,8 +28,8 @@ public class PrincipalDetailsService implements UserDetailsService {
     @Autowired
     private JPAQueryFactory queryFactory;
 
-    private final QUsers qUser = QUsers.users;
-    private final QCredentials qCredentials = QCredentials.credentials;
+    private final QUser qUser = QUser.user;
+    private final QCredential qCredential = QCredential.credential;
 
     @Override
     @NotNull  // 무조건 return 값이 UserDetail 이라고 선언
@@ -44,16 +43,16 @@ public class PrincipalDetailsService implements UserDetailsService {
 //        Password passwordEntity = passwordDAO.findByUser(userEntity.getUserNo())
 //                .orElseThrow(()-> new UsernameNotFoundException("비번없음"));
 
-        Credentials credentialsEntity = queryFactory.selectFrom(qCredentials)
-                .innerJoin(qCredentials.users, qUser).fetchJoin()
+        Credential credentialEntity = queryFactory.selectFrom(qCredential)
+                .innerJoin(qCredential.user, qUser).fetchJoin()
                 .where(qUser.email.eq(email))
                 .fetchOne();
-        if (credentialsEntity == null) {
+        if (credentialEntity == null) {
             throw new UsernameNotFoundException("아이디 또는 비밀번호가 일치하지 않습니다");
         }
-        Users usersEntity = credentialsEntity.getUsers();
+        User userEntity = credentialEntity.getUser();
         // 3. merge
-        return  new PrincipalDetails(usersEntity, credentialsEntity.getPassword());
+        return  new PrincipalDetails(userEntity, credentialEntity.getPassword());
     }
 
 }

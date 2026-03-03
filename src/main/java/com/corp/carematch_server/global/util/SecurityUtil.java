@@ -1,6 +1,6 @@
 package com.corp.carematch_server.global.util;
 
-import com.corp.carematch_server.domain.user.entity.Users;
+import com.corp.carematch_server.domain.user.entity.User;
 import com.corp.carematch_server.global.auth.PrincipalDetails;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,24 +27,24 @@ public class SecurityUtil {
     // 2. 유저정보 추출 [일반]
     // 로그인한 유저 객체정보. 비로그인시 null 반환
     // 로그인 여부에 따라 로직이 달라지는경우
-    public static Users getCurrentUserOrNull(){
+    public static User getCurrentUserOrNull(){
         if(!isLogin()){
             return null;
         }
 
         PrincipalDetails principal = (PrincipalDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return principal.getUsers();
+        return principal.getUser();
     }
 
     // 2-1. 유저정보 추출 [엄격]
     // 무조건 로그인한 사람만 가능
-    public static Users getCurrentUser() {
-        Users users = getCurrentUserOrNull();
+    public static User getCurrentUser() {
+        User user = getCurrentUserOrNull();
 
-        if (users == null) {
+        if (user == null) {
             throw new RuntimeException("로그인 정보가 없습니다.");
         }
-        return users;
+        return user;
     }
 
     // 현재 로그인한 유저의 ID(user_no)만 빠르게 가져오기

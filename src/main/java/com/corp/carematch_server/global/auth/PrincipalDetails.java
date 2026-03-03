@@ -1,6 +1,6 @@
 package com.corp.carematch_server.global.auth;
 
-import com.corp.carematch_server.domain.user.entity.Users;
+import com.corp.carematch_server.domain.user.entity.User;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -13,12 +13,12 @@ import java.util.Map;
 @Getter
 public class PrincipalDetails implements UserDetails {
 
-    private final Users users;
+    private final User user;
     private final  String password;
     private final Map<String, Object> attributes; // OAuth2용 (선택사항)
 
-    public PrincipalDetails(Users users, String password){
-        this.users = users;
+    public PrincipalDetails(User user, String password){
+        this.user = user;
         this.password = password;
         this.attributes = null;
     }
@@ -26,12 +26,12 @@ public class PrincipalDetails implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities(){
         ArrayList<GrantedAuthority> authList = new ArrayList<>();
-        authList.add(new SimpleGrantedAuthority(users.getUserRole()));
+        authList.add(new SimpleGrantedAuthority(user.getUserRole()));
         return authList;
     }
 
     @Override
-    public String getUsername(){return  users.getEmail();}
+    public String getUsername(){return  user.getEmail();}
 
 
     @Override
