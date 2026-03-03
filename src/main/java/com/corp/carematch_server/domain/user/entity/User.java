@@ -1,4 +1,4 @@
-package com.corp.carematch_server.domain.auth.entity;
+package com.corp.carematch_server.domain.user.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

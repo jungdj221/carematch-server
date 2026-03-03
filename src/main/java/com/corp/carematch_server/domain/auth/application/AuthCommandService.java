@@ -1,9 +1,13 @@
 package com.corp.carematch_server.domain.auth.application;
 
 import com.corp.carematch_server.domain.auth.dto.LoginRequestDTO;
+import com.corp.carematch_server.domain.auth.dto.UserRequestDTO;
+import com.corp.carematch_server.domain.auth.dto.UserResponseDTO;
 import com.corp.carematch_server.domain.auth.entity.*;
 import com.corp.carematch_server.domain.auth.repo.PasswordDAO;
 import com.corp.carematch_server.domain.auth.repo.UserDAO;
+import com.corp.carematch_server.domain.user.entity.QUser;
+import com.corp.carematch_server.domain.user.entity.User;
 import com.corp.carematch_server.global.auth.TokenProvider;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +17,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class UserAuthService {
+public class AuthCommandService {
 
     @Autowired
     private UserDAO userDAO;
@@ -30,7 +34,32 @@ public class UserAuthService {
     private final QUser qUser = QUser.user;
     private final QPassword qPassword = QPassword.password1;
 
-    // 인증 login, token
+    // signup
+    public UserResponseDTO signup(UserRequestDTO dto){
+        // step 1; root user 정보 기입
+        User user = User.builder()
+                .email(dto.getEmail())
+                .loginType(dto.getLoginType())
+                .build();
+        User newUser = userDAO.save(user);
+        // step 2; password + salt
+        Password password = Password.builder()
+                .user(User.builder()
+                        .userNo(newUser.getUserNo())
+                        .build())
+//                .salt()
+                .password(passwordEncoder.encode(dto.getPassword()))
+                .build();
+        Password newPassword = passwordDAO.save(password);
+
+        // step 3; 결과값 res
+        return  UserResponseDTO.builder()
+                .userNo(newUser.getUserNo())
+                .email(newUser.getEmail())
+                .build();
+
+    }
+
     // login
     public TokenDTO login(LoginRequestDTO dto){
 

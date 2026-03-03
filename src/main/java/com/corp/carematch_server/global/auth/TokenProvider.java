@@ -1,6 +1,6 @@
 package com.corp.carematch_server.global.auth;
 
-import com.corp.carematch_server.domain.auth.entity.User;
+import com.corp.carematch_server.domain.user.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;

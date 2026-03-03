@@ -1,6 +1,6 @@
 package com.corp.carematch_server.global.auth;
 
-import com.corp.carematch_server.domain.auth.entity.User;
+import com.corp.carematch_server.domain.user.entity.User;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

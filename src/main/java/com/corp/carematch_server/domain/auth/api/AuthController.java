@@ -1,7 +1,6 @@
 package com.corp.carematch_server.domain.auth.api;
 
-import com.corp.carematch_server.domain.auth.application.UserAuthService;
-import com.corp.carematch_server.domain.auth.application.UserCommandService;
+import com.corp.carematch_server.domain.auth.application.AuthCommandService;
 import com.corp.carematch_server.domain.auth.dto.LoginRequestDTO;
 import com.corp.carematch_server.domain.auth.dto.LoginResponseDTO;
 import com.corp.carematch_server.domain.auth.dto.UserRequestDTO;
@@ -21,17 +20,17 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     @Autowired
-    private UserAuthService userAuthService;
+    private AuthCommandService authService;
 
     @Autowired
-    private UserCommandService userCommandService;
+    private AuthCommandService authCommandService;
 
     // login
     @PostMapping("/public/auth/login")
     public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginRequestDTO dto){
 
         // 1. 로그인 성공 후, access & refresh token 발급
-        TokenDTO tokenDTO = userAuthService.login(dto);
+        TokenDTO tokenDTO = authService.login(dto);
 
         // 2. refreshToken 은 쿠키에 포장
         ResponseCookie refreshCookie = ResponseCookie.from("refreshToken", tokenDTO.getRefreshToken())
@@ -54,7 +53,7 @@ public class AuthController {
     // signup
     @PostMapping("/public/auth/signup")
     public ResponseEntity<UserResponseDTO> signUpLocal(@RequestBody UserRequestDTO dto){
-        UserResponseDTO response = userCommandService.signup(dto);
+        UserResponseDTO response = authCommandService.signup(dto);
         return  ResponseEntity.ok(response);
     }
 
