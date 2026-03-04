@@ -4,8 +4,8 @@ import com.corp.carematch_server.domain.auth.dto.LoginRequestDTO;
 import com.corp.carematch_server.domain.auth.dto.UserRequestDTO;
 import com.corp.carematch_server.domain.auth.dto.UserResponseDTO;
 import com.corp.carematch_server.domain.auth.entity.*;
-import com.corp.carematch_server.domain.auth.repo.PasswordDAO;
-import com.corp.carematch_server.domain.user.repo.UserDAO;
+import com.corp.carematch_server.domain.auth.repo.PasswordRepository;
+import com.corp.carematch_server.domain.user.repo.UserRepository;
 import com.corp.carematch_server.domain.user.entity.QUser;
 import com.corp.carematch_server.domain.user.entity.User;
 import com.corp.carematch_server.global.auth.TokenProvider;
@@ -20,10 +20,10 @@ import org.springframework.stereotype.Service;
 public class AuthCommandService {
 
     @Autowired
-    private UserDAO userDAO;
+    private UserRepository userRepository;
 
     @Autowired
-    private PasswordDAO passwordDAO;
+    private PasswordRepository passwordRepository;
 
     @Autowired
     private JPAQueryFactory queryFactory;
@@ -41,7 +41,7 @@ public class AuthCommandService {
                 .email(dto.getEmail())
                 .loginType(dto.getLoginType())
                 .build();
-        User newUser = userDAO.save(user);
+        User newUser = userRepository.save(user);
         // step 2; password + salt
         Credential credential = Credential.builder()
                 .user(User.builder()
@@ -50,7 +50,7 @@ public class AuthCommandService {
 //                .salt()
                 .password(passwordEncoder.encode(dto.getPassword()))
                 .build();
-        Credential newCredential = passwordDAO.save(credential);
+        Credential newCredential = passwordRepository.save(credential);
 
         // step 3; 결과값 res
         return  UserResponseDTO.builder()

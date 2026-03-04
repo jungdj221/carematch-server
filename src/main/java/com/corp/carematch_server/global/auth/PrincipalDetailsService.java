@@ -4,8 +4,8 @@ import com.corp.carematch_server.domain.auth.entity.Credential;
 import com.corp.carematch_server.domain.auth.entity.QCredential;
 import com.corp.carematch_server.domain.user.entity.QUser;
 import com.corp.carematch_server.domain.user.entity.User;
-import com.corp.carematch_server.domain.auth.repo.PasswordDAO;
-import com.corp.carematch_server.domain.user.repo.UserDAO;
+import com.corp.carematch_server.domain.auth.repo.PasswordRepository;
+import com.corp.carematch_server.domain.user.repo.UserRepository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
@@ -20,10 +20,10 @@ import org.springframework.stereotype.Service;
 public class PrincipalDetailsService implements UserDetailsService {
 
     @Autowired
-    private UserDAO userDAO;
+    private UserRepository userRepository;
 
     @Autowired
-    private PasswordDAO passwordDAO;
+    private PasswordRepository passwordRepository;
 
     @Autowired
     private JPAQueryFactory queryFactory;
