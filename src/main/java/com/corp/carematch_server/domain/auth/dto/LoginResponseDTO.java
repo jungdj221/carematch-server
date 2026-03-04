@@ -1,4 +1,4 @@
-package com.corp.carematch_server.domain.user.dto;
+package com.corp.carematch_server.domain.auth.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

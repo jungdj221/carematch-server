@@ -1,11 +1,11 @@
 package com.corp.carematch_server.global.auth;
 
-import com.corp.carematch_server.domain.user.entity.Password;
-import com.corp.carematch_server.domain.user.entity.QPassword;
+import com.corp.carematch_server.domain.auth.entity.Credential;
+import com.corp.carematch_server.domain.auth.entity.QCredential;
 import com.corp.carematch_server.domain.user.entity.QUser;
 import com.corp.carematch_server.domain.user.entity.User;
-import com.corp.carematch_server.domain.user.repo.PasswordDAO;
-import com.corp.carematch_server.domain.user.repo.UserDAO;
+import com.corp.carematch_server.domain.auth.repo.PasswordRepository;
+import com.corp.carematch_server.domain.user.repo.UserRepository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,16 +20,16 @@ import org.springframework.stereotype.Service;
 public class PrincipalDetailsService implements UserDetailsService {
 
     @Autowired
-    private UserDAO userDAO;
+    private UserRepository userRepository;
 
     @Autowired
-    private PasswordDAO passwordDAO;
+    private PasswordRepository passwordRepository;
 
     @Autowired
     private JPAQueryFactory queryFactory;
 
     private final QUser qUser = QUser.user;
-    private final QPassword qPassword = QPassword.password1;
+    private final QCredential qCredential = QCredential.credential;
 
     @Override
     @NotNull  // 무조건 return 값이 UserDetail 이라고 선언
@@ -44,16 +43,16 @@ public class PrincipalDetailsService implements UserDetailsService {
 //        Password passwordEntity = passwordDAO.findByUser(userEntity.getUserNo())
 //                .orElseThrow(()-> new UsernameNotFoundException("비번없음"));
 
-        Password passwordEntity = queryFactory.selectFrom(qPassword)
-                .innerJoin(qPassword.user, qUser).fetchJoin()
+        Credential credentialEntity = queryFactory.selectFrom(qCredential)
+                .innerJoin(qCredential.user, qUser).fetchJoin()
                 .where(qUser.email.eq(email))
                 .fetchOne();
-        if (passwordEntity == null) {
+        if (credentialEntity == null) {
             throw new UsernameNotFoundException("아이디 또는 비밀번호가 일치하지 않습니다");
         }
-        User userEntity = passwordEntity.getUser();
+        User userEntity = credentialEntity.getUser();
         // 3. merge
-        return  new PrincipalDetails(userEntity, passwordEntity.getPassword());
+        return  new PrincipalDetails(userEntity, credentialEntity.getPassword());
     }
 
 }

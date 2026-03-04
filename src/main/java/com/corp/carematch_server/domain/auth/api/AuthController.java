@@ -1,34 +1,33 @@
-package com.corp.carematch_server.domain.user.api;
+package com.corp.carematch_server.domain.auth.api;
 
-import com.corp.carematch_server.domain.user.application.UserAuthService;
-import com.corp.carematch_server.domain.user.dto.LoginRequestDTO;
-import com.corp.carematch_server.domain.user.dto.LoginResponseDTO;
-import com.corp.carematch_server.domain.user.entity.Password;
-import com.corp.carematch_server.domain.user.entity.TokenDTO;
-import com.corp.carematch_server.domain.user.entity.User;
+import com.corp.carematch_server.domain.auth.application.AuthCommandService;
+import com.corp.carematch_server.domain.auth.dto.LoginRequestDTO;
+import com.corp.carematch_server.domain.auth.dto.LoginResponseDTO;
+import com.corp.carematch_server.domain.auth.dto.UserRequestDTO;
+import com.corp.carematch_server.domain.auth.dto.UserResponseDTO;
+import com.corp.carematch_server.domain.auth.entity.TokenDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 
 // 인증과 관련된 모든것은 여기서 처리. 로그인
 @RestController
-@RequestMapping("/user-service/api/v1")
+@CrossOrigin(origins = {"*"}, maxAge = 6000)
+@RequestMapping("/auth-service/api/v1")
 public class AuthController {
 
     @Autowired
-    private UserAuthService userAuthService;
+    private AuthCommandService authCommandService;
 
     // login
     @PostMapping("/public/auth/login")
     public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginRequestDTO dto){
 
         // 1. 로그인 성공 후, access & refresh token 발급
-        TokenDTO tokenDTO = userAuthService.login(dto);
+        TokenDTO tokenDTO = authCommandService.login(dto);
 
         // 2. refreshToken 은 쿠키에 포장
         ResponseCookie refreshCookie = ResponseCookie.from("refreshToken", tokenDTO.getRefreshToken())
@@ -48,6 +47,12 @@ public class AuthController {
                 .body(response);
     }
 
-    // refreshToken 재발급 - test does it work? really? - one more testing commit in local feature branch.
-    //dkdkdkkl 이종찬
+    // signup
+    @PostMapping("/public/auth/signup")
+    public ResponseEntity<UserResponseDTO> signUpLocal(@RequestBody UserRequestDTO dto){
+        UserResponseDTO response = authCommandService.signup(dto);
+        return  ResponseEntity.ok(response);
+    }
+
+
 }
