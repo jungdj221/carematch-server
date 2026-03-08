@@ -7,9 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
-public class UserQueryService {
+@Transactional(rollbackFor = Exception.class)
+public class UserCommandService {
 
     private final UserRepository userRepository;
-    // 조회만 read
 }
