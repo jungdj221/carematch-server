@@ -70,6 +70,7 @@ dependencies {
 
     // 9. Testing - 테스트 서버 가동시 필요한것
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'com.h2database:h2'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
