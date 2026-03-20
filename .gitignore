@@ -44,3 +44,5 @@ src/main/resources/application-prod.properties
 
 .env
 
+# AI Agent 개인 설정 및 워크플로우 (공유 제외)
+.agent/
