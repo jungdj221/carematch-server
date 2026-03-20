@@ -1,0 +1,26 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb;MODE=MySQL;NON_KEYWORDS=USER
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+  sql:
+    init:
+      mode: always # Ensures scripts run during test startup
+      schema-locations:
+        - classpath:schema/01-schema-user.sql
+        - classpath:schema/02-schema-auth.sql
+        - classpath:schema/03-schema-payment.sql
+        - classpath:schema/04-schema-post.sql
+      data-locations:
+        - classpath:data/01-data-user.sql
+        - classpath:data/02-data-auth.sql
+        - classpath:data/03-data-payment.sql
+        - classpath:data/04-data-post.sql
+  jpa:
+    hibernate:
+      ddl-auto: none # Prevents auto schema generation during tests
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
